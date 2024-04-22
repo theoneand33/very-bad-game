@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://uietplghs6ep"]
+
+[ext_resource type="PackedScene" uid="uid://cn5twid1cwcke" path="res://Rocket.fbx" id="1_xcbcx"]
+
+[node name="Root Scene" instance=ExtResource("1_xcbcx")]
+
+[node name="Fire" parent="RootNode" index="3"]
+transform = Transform3D(63.0353, 0, 0, 0, -63.0353, -1.24545e-05, 0, 9.51807e-06, -82.4823, 0, -148378, 2.06248)

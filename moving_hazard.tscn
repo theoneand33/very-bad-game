@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://eiij5t1jhu3x"]
+
+[ext_resource type="Script" path="res://moving_hazard.gd" id="1_w1khs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hhwpl"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jwlsg"]
+size = Vector3(3, 3, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cab1v"]
+size = Vector3(3, 3, 3)
+
+[node name="moving hazard" type="AnimatableBody3D" groups=["Hazard"]]
+script = ExtResource("1_w1khs")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_hhwpl")
+mesh = SubResource("BoxMesh_jwlsg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0240746, 0)
+shape = SubResource("BoxShape3D_cab1v")

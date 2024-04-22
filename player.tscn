@@ -1,0 +1,94 @@
+[gd_scene load_steps=14 format=3 uid="uid://c46l8holhutcx"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_frxvh"]
+[ext_resource type="AudioStream" uid="uid://c5dct8c2847hm" path="res://audio/SFX - Death Explosion.ogg" id="2_c66dw"]
+[ext_resource type="AudioStream" uid="uid://cbyd6vpf5ycyj" path="res://audio/SFX - Success.ogg" id="3_2x4tn"]
+[ext_resource type="AudioStream" uid="uid://h3ha044uwrmd" path="res://audio/SFX - Main engine thrust.ogg" id="4_0rflc"]
+[ext_resource type="PackedScene" uid="uid://ux6ivcx1ovdp" path="res://particles/booster_particles.tscn" id="5_oka11"]
+[ext_resource type="PackedScene" uid="uid://dcecb8hw7dbrv" path="res://particles/explosion_particles.tscn" id="6_hiqcl"]
+[ext_resource type="PackedScene" uid="uid://b4mdqk6hbtqd2" path="res://particles/success_particles.tscn" id="6_sjal8"]
+[ext_resource type="Material" uid="uid://copmi1utx3lpt" path="res://ship_colour.tres" id="8_c6kot"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_t0nbu"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_7ddnt"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_f13at"]
+radius = 0.2
+height = 1.7
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_prfbd"]
+top_radius = 0.0
+bottom_radius = 0.2
+height = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_m7cre"]
+radius = 0.2
+height = 1.0
+
+[node name="player" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.942, 0, 0, 0, 0.956, 0, 0, 0)
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+max_contacts_reported = 10
+contact_monitor = true
+linear_damp = 1.0
+angular_damp = 3.0
+script = ExtResource("1_frxvh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("CylinderMesh_t0nbu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_7ddnt")
+
+[node name="ExplosionAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_c66dw")
+
+[node name="SuccessAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_2x4tn")
+
+[node name="RocketAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.89852, 0)
+stream = ExtResource("4_0rflc")
+
+[node name="BoosterParticles" parent="." instance=ExtResource("5_oka11")]
+transform = Transform3D(1.50028, 0, 0, 0, 1.37438, 0, 0, 0, 1, 0, -1.2, 0)
+visibility_aabb = AABB(-4, -4, -8.00993, 8, 8, 16.0199)
+
+[node name="RightBoosterParticles" parent="." instance=ExtResource("5_oka11")]
+transform = Transform3D(1.50028, 0, 0, 0, 1.37438, 0, 0, 0, 1, 0.4, -1.2, 0)
+visibility_aabb = AABB(-4, -4, -15.8253, 8, 8, 31.6507)
+
+[node name="LeftBoosterParticles" parent="." instance=ExtResource("5_oka11")]
+transform = Transform3D(1.50028, 0, 0, 0, 1.37438, 0, 0, 0, 1, -0.4, -1.2, 0)
+visibility_aabb = AABB(-4, -4, -7.95365, 8, 8, 15.9073)
+
+[node name="SuccessParticles" parent="." instance=ExtResource("6_sjal8")]
+
+[node name="ExplosionParticles" parent="." instance=ExtResource("6_hiqcl")]
+
+[node name="body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.255, 0)
+material_override = ExtResource("8_c6kot")
+mesh = SubResource("CapsuleMesh_f13at")
+
+[node name="cockpit" type="MeshInstance3D" parent="body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.005, 0)
+material_override = ExtResource("8_c6kot")
+mesh = SubResource("CylinderMesh_prfbd")
+skeleton = NodePath("../..")
+
+[node name="LeftTruster" type="MeshInstance3D" parent="body"]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999998, 0, 0, 0, 0.999999, -0.28, -0.3, 0)
+material_override = ExtResource("8_c6kot")
+mesh = SubResource("CapsuleMesh_m7cre")
+
+[node name="RightThruster" type="MeshInstance3D" parent="body"]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999998, 0, 0, 0, 0.999998, 0.28, -0.3, 0)
+material_override = ExtResource("8_c6kot")
+mesh = SubResource("CapsuleMesh_m7cre")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
